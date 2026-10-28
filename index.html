@@ -18,7 +18,6 @@
       --text: #202b38;
       --muted: #64748b;
       --border: #dce4ed;
-      --danger: #b42318;
       --warning-bg: #fff5e8;
       --success: #17633b;
       --success-bg: #eaf7ef;
@@ -69,9 +68,7 @@
       flex-wrap: wrap;
     }
 
-    select, input, button {
-      font: inherit;
-    }
+    select, input, button { font: inherit; }
 
     select, input {
       width: 100%;
@@ -174,13 +171,17 @@
       border-color: #b9d5f5;
     }
 
+    #result.known {
+      background: var(--success-bg);
+      border-color: #a6d9b7;
+    }
+
     #result.invalid {
       background: #fff0ef;
       border-color: #f2b8b5;
     }
 
     #result h3 { margin: 0 0 8px; }
-
     #result ul { padding-inline-start: 24px; }
 
     .result-note {
@@ -264,9 +265,9 @@
 
   <main class="container">
     <section class="card" aria-labelledby="scanHeading">
-      <h2 id="scanHeading" data-i18n="scanHeading">افحص رابطًا مشبوهًا</h2>
+      <h2 id="scanHeading" data-i18n="scanHeading">افحص رابطًا</h2>
       <p class="muted" data-i18n="scanIntro">
-        أدخل الرابط لتحليل بعض العلامات التي قد تشير إلى الاحتيال.
+        أدخل الرابط لفحص بعض العلامات التي قد تستحق الانتباه.
       </p>
 
       <form id="scanForm" novalidate>
@@ -301,9 +302,9 @@
     <section class="card">
       <h2 data-i18n="tipsHeading">كيف تحمي نفسك؟</h2>
       <ul>
-        <li data-i18n="tip1">لا تشارك الرقم القومي أو بيانات البنك عبر روابط غير موثوقة.</li>
-        <li data-i18n="tip2">تحقق من اسم النطاق الرسمي للجهة قبل تسجيل الدخول.</li>
-        <li data-i18n="tip3">لا تضغط على روابط الجوائز والمساعدات المالية المجهولة.</li>
+        <li data-i18n="tip1">لا تشارك بيانات البنك عبر روابط غير موثوقة.</li>
+        <li data-i18n="tip2">تحقق من اسم النطاق الرسمي قبل تسجيل الدخول.</li>
+        <li data-i18n="tip3">تجنب روابط الجوائز والمساعدات المجهولة.</li>
         <li data-i18n="tip4">وجود HTTPS وحده لا يعني أن الموقع آمن.</li>
         <li data-i18n="tip5">لا تُدخل كلمات المرور أو رموز التحقق في صفحات لا تثق بها.</li>
       </ul>
@@ -313,11 +314,10 @@
       <h2 data-i18n="privacyHeading">الخصوصية وحدود الفحص</h2>
       <p class="privacy-note" data-i18n="privacyText">
         تتم عملية التحليل داخل متصفحك، ولا يرسل هذا الكود الرابط إلى خادم خارجي.
-        الفحص مبدئي ولا يتصل بقواعد بيانات الاحتيال، لذلك لا يضمن أن الموقع آمن أو احتيالي.
+        الفحص مبدئي ولا يتصل بقواعد بيانات التهديدات، ولا يضمن سلامة أي رابط.
       </p>
     </section>
 
-    <!-- إعلان ترويجي لموقعك الآخر: احتفظنا بالرابط الحالي -->
     <section class="card ad-card" aria-labelledby="adHeading">
       <div style="font-size:34px" aria-hidden="true">🛍️</div>
       <span class="ad-label" data-i18n="adLabel">إعلان ترويجي</span>
@@ -333,7 +333,7 @@
         data-i18n="adButton"
       >تصفح العروض الآن</a>
       <p class="hint" data-i18n="adDisclaimer">
-        موقع ترويجي مستقل. تحقق من تفاصيل المنتج والسعر والتوافر لدى البائع قبل الشراء.
+        تحقق من تفاصيل المنتج والسعر والتوافر لدى البائع قبل الشراء.
       </p>
     </section>
   </main>
@@ -356,97 +356,113 @@
         title: "كشف الاحتيال",
         subtitle: "Scam Detector — افحص الرابط قبل أن تثق به",
         languageLabel: "🌐 اللغة / Language",
-        scanHeading: "افحص رابطًا مشبوهًا",
-        scanIntro: "أدخل الرابط لتحليل بعض العلامات التي قد تشير إلى الاحتيال.",
+        scanHeading: "افحص رابطًا",
+        scanIntro: "أدخل الرابط لفحص بعض العلامات التي قد تستحق الانتباه.",
         urlLabel: "رابط الموقع",
         urlHint: "لا تفتح الرابط المشبوه؛ يكفي لصقه هنا لتحليل عنوانه.",
         scanButton: "🔎 افحص الرابط",
         clearButton: "مسح النتائج",
         tipsHeading: "كيف تحمي نفسك؟",
-        tip1: "لا تشارك الرقم القومي أو بيانات البنك عبر روابط غير موثوقة.",
-        tip2: "تحقق من اسم النطاق الرسمي للجهة قبل تسجيل الدخول.",
-        tip3: "لا تضغط على روابط الجوائز والمساعدات المالية المجهولة.",
+        tip1: "لا تشارك بيانات البنك عبر روابط غير موثوقة.",
+        tip2: "تحقق من اسم النطاق الرسمي قبل تسجيل الدخول.",
+        tip3: "تجنب روابط الجوائز والمساعدات المجهولة.",
         tip4: "وجود HTTPS وحده لا يعني أن الموقع آمن.",
         tip5: "لا تُدخل كلمات المرور أو رموز التحقق في صفحات لا تثق بها.",
         privacyHeading: "الخصوصية وحدود الفحص",
-        privacyText: "تتم عملية التحليل داخل متصفحك، ولا يرسل هذا الكود الرابط إلى خادم خارجي. الفحص مبدئي ولا يتصل بقواعد بيانات الاحتيال، لذلك لا يضمن أن الموقع آمن أو احتيالي.",
+        privacyText: "يتم التحليل داخل متصفحك ولا يرسل هذا الكود الرابط إلى خادم خارجي. الفحص مبدئي ولا يتصل بقواعد بيانات التهديدات، ولا يضمن سلامة أي رابط.",
         adLabel: "إعلان ترويجي",
         adHeading: "عروض وخصومات مصر",
         adText: "اكتشف المنتجات والعروض التي قد تناسبك عبر موقعنا.",
         adButton: "تصفح العروض الآن",
-        adDisclaimer: "موقع ترويجي مستقل. تحقق من تفاصيل المنتج والسعر والتوافر لدى البائع قبل الشراء.",
+        adDisclaimer: "تحقق من تفاصيل المنتج والسعر والتوافر لدى البائع قبل الشراء.",
         footer: "كشف الاحتيال © 2026 — أداة توعوية مجانية",
         footerAd: "عروض وخصومات مصر",
         invalidTitle: "تعذّر تحليل الرابط",
         invalidText: "أدخل عنوانًا صحيحًا مثل https://example.com.",
-        warningTitle: "تنبيه: ظهرت علامات تستحق الحذر",
-        neutralTitle: "لم تُكتشف مؤشرات واضحة ضمن الفحوصات المحدودة",
-        reasonsTitle: "الملاحظات:",
-        noReasons: "لم تظهر علامات التحذير المحددة في هذه الأداة.",
-        alwaysCaution: "هذه نتيجة مبدئية فقط. عدم ظهور تحذيرات لا يعني أن الموقع آمن، وظهور علامة لا يثبت الاحتيال.",
-        http: "الرابط لا يستخدم HTTPS. الاتصال قد لا يكون مشفرًا بينك وبين الموقع.",
-        ip: "يستخدم الرابط عنوان IP بدل اسم نطاق معتاد. هذا ليس دليل احتيال بمفرده.",
-        localIp: "يشير الرابط إلى عنوان محلي أو خاص. تأكد من أنك تقصد هذا الجهاز أو الشبكة.",
-        punycode: "اسم النطاق يحتوي على ترميز دولي (xn--). تحقق من الاسم بعناية لاحتمال تشابه الحروف.",
-        shortener: "الرابط يستخدم خدمة اختصار تخفي الوجهة النهائية. تحقق من الوجهة قبل فتحه.",
-        credentials: "يحتوي العنوان على معلومات قبل علامة @ قد تُستخدم لإخفاء اسم المضيف الحقيقي.",
-        long: "الرابط طويل بشكل غير معتاد. الطول وحده لا يثبت وجود احتيال.",
-        subdomains: "يحتوي اسم المضيف على مستويات فرعية كثيرة. تحقق من النطاق الأساسي المقصود.",
-        encoded: "يحتوي الرابط على ترميز كثيف لبعض الأحرف. افحص الوجهة بعناية.",
-        suspiciousWords: "يحتوي مسار الرابط أو استعلامه على كلمات شائعة في رسائل الاستعجال أو الجوائز. هذه الكلمات وحدها لا تثبت الاحتيال.",
-        mixedScript: "قد يحتوي اسم النطاق على حروف من أنظمة كتابة مختلفة. تأكد من أنه النطاق الرسمي المقصود.",
-        mailto: "هذا عنوان بريد إلكتروني وليس رابط موقع ويب مدعومًا بهذه الأداة.",
+        mailto: "هذا عنوان بريد إلكتروني وليس رابط موقع مدعومًا.",
         unsupported: "يُسمح بروابط HTTP وHTTPS فقط.",
         tooLong: "الرابط طويل جدًا لتحليله بهذه الأداة.",
-        badUrl: "تعذّر فهم العنوان. راجع كتابته وحاول مرة أخرى."
+        badUrl: "تعذّر فهم العنوان. راجع كتابته وحاول مرة أخرى.",
+        knownTitle: "نطاق معروف — لا يعني ضمان أمان الرابط",
+        knownIntro: "اسم النطاق يطابق نطاقًا معروفًا في القائمة المحلية لهذه الأداة.",
+        warningTitle: "تنبيه: توجد علامات تستحق الحذر",
+        neutralTitle: "لم تُكتشف علامات واضحة ضمن الفحوصات المحدودة",
+        notesTitle: "ملاحظات الفحص:",
+        strongTitle: "علامات تستحق الحذر:",
+        weakTitle: "ملاحظات شكلية لا تثبت الاحتيال:",
+        noReasons: "لم تظهر العلامات المحددة التي تفحصها هذه الأداة.",
+        knownLabel: "حالة النطاق: معروف في القائمة المحلية",
+        unknownLabel: "حالة النطاق: غير موجود في القائمة المحلية",
+        hostLabel: "اسم المضيف: ",
+        long: "الرابط طويل. طول الرابط وحده لا يدل على الاحتيال؛ الروابط التجارية قد تكون طويلة بصورة طبيعية.",
+        encoded: "توجد أحرف مرمّزة في الرابط. هذا أمر شائع في الروابط التي تحتوي على نصوص عربية أو معاملات، وليس دليل احتيال بمفرده.",
+        suspiciousWords: "يحتوي المسار أو الاستعلام على كلمات قد تظهر في رسائل الاستعجال أو الجوائز. الكلمات وحدها لا تثبت الاحتيال.",
+        http: "الرابط لا يستخدم HTTPS؛ قد لا يكون الاتصال مشفرًا.",
+        ip: "يستخدم الرابط عنوان IP بدل اسم نطاق معتاد. هذا ليس دليل احتيال بمفرده.",
+        localIp: "يشير الرابط إلى عنوان محلي أو خاص. تأكد أنك تقصد هذا الجهاز أو الشبكة.",
+        punycode: "اسم النطاق يحتوي على ترميز دولي من نوع xn--. تحقق من الاسم بعناية.",
+        shortener: "يستخدم الرابط خدمة اختصار تخفي الوجهة النهائية. تحقق من الوجهة قبل المتابعة.",
+        credentials: "يحتوي العنوان على بيانات قبل علامة @ قد تخفي اسم المضيف الحقيقي.",
+        subdomains: "اسم المضيف يحتوي على مستويات فرعية كثيرة. تحقق من النطاق الأساسي المقصود.",
+        mixedScript: "قد يحتوي اسم النطاق على حروف من أنظمة كتابة مختلفة. تحقق من الاسم الرسمي.",
+        caution: "هذه نتيجة أولية وليست شهادة أمان. النطاق المعروف قد يحتوي على صفحة أو تحويل غير مرغوب فيه. لا تدخل بيانات حساسة إلا بعد التأكد من العنوان الكامل.",
+        cautionUnknown: "عدم وجود علامات تحذير لا يعني أن الرابط آمن. هذه الأداة لا تتصل بقواعد بيانات أمنية ولا تتحقق من سمعة الرابط على الإنترنت."
       },
       en: {
         title: "Scam Detector",
         subtitle: "Check a link before you trust it",
         languageLabel: "🌐 Language",
-        scanHeading: "Check a suspicious link",
-        scanIntro: "Enter a URL to check for some warning signs.",
+        scanHeading: "Check a link",
+        scanIntro: "Enter a URL to check for signs that may deserve attention.",
         urlLabel: "Website URL",
         urlHint: "Do not open a suspicious link. Paste its address here instead.",
         scanButton: "🔎 Check link",
         clearButton: "Clear results",
         tipsHeading: "How to protect yourself",
-        tip1: "Do not share national ID or banking details through untrusted links.",
-        tip2: "Verify the organization's official domain before signing in.",
+        tip1: "Do not share banking details through untrusted links.",
+        tip2: "Verify the official domain before signing in.",
         tip3: "Avoid unknown prize and financial-aid links.",
         tip4: "HTTPS alone does not mean a website is safe.",
-        tip5: "Do not enter passwords or verification codes on pages you do not trust.",
+        tip5: "Never enter passwords or verification codes on pages you do not trust.",
         privacyHeading: "Privacy and limitations",
-        privacyText: "Analysis runs in your browser. This code does not send the URL to an external server. It does not query threat databases and cannot guarantee that a website is safe or fraudulent.",
+        privacyText: "Analysis runs in your browser. This code does not send the URL to an external server. It does not query threat databases and cannot guarantee a link is safe.",
         adLabel: "Promotional notice",
         adHeading: "Egypt Deals & Discounts",
         adText: "Discover products and offers that may suit you on our website.",
         adButton: "Browse offers",
-        adDisclaimer: "Independent promotional website. Verify product details, price, and availability with the seller before purchasing.",
+        adDisclaimer: "Verify product details, price, and availability with the seller before purchasing.",
         footer: "Scam Detector © 2026 — Free awareness tool",
         footerAd: "Egypt Deals & Discounts",
         invalidTitle: "Unable to analyze this URL",
         invalidText: "Enter a valid address such as https://example.com.",
-        warningTitle: "Caution: warning signs detected",
-        neutralTitle: "No obvious signs found in these limited checks",
-        reasonsTitle: "Observations:",
-        noReasons: "None of this tool's selected warning signs were detected.",
-        alwaysCaution: "This is only a preliminary result. No warning signs does not mean a site is safe, and a warning sign does not prove fraud.",
-        http: "The URL does not use HTTPS. The connection may not be encrypted.",
-        ip: "The URL uses an IP address instead of a typical domain name. This alone does not prove fraud.",
-        localIp: "The URL points to a local or private address. Confirm that this device or network is your intended destination.",
-        punycode: "The domain contains internationalized encoding (xn--). Check it carefully for look-alike characters.",
-        shortener: "A URL-shortening service hides the final destination. Verify the destination before opening it.",
-        credentials: "The address contains information before an @ sign that may obscure the actual hostname.",
-        long: "The URL is unusually long. Length alone does not prove fraud.",
-        subdomains: "The hostname has many subdomain levels. Verify the intended base domain.",
-        encoded: "The URL contains extensive character encoding. Review its destination carefully.",
-        suspiciousWords: "The path or query contains words common in urgent or prize messages. These words alone do not prove fraud.",
-        mixedScript: "The domain may contain characters from different writing systems. Verify that it is the intended official domain.",
         mailto: "This is an email address, not a supported website URL.",
         unsupported: "Only HTTP and HTTPS URLs are supported.",
         tooLong: "This URL is too long for this tool to analyze.",
-        badUrl: "The address could not be parsed. Check it and try again."
+        badUrl: "The address could not be parsed. Check it and try again.",
+        knownTitle: "Known domain — not a guarantee of link safety",
+        knownIntro: "The hostname matches a domain in this tool's local list.",
+        warningTitle: "Caution: signs worth checking were found",
+        neutralTitle: "No obvious signs found in these limited checks",
+        notesTitle: "Scan notes:",
+        strongTitle: "Signs worth checking:",
+        weakTitle: "Minor observations that do not prove fraud:",
+        noReasons: "None of this tool's selected warning signs were detected.",
+        knownLabel: "Domain status: known in local list",
+        unknownLabel: "Domain status: not in local list",
+        hostLabel: "Hostname: ",
+        long: "The URL is long. Length alone does not indicate fraud; legitimate shopping links can be long.",
+        encoded: "The URL contains encoded characters. This is common in URLs with non-English text or parameters and does not prove fraud.",
+        suspiciousWords: "The path or query contains words sometimes used in urgent or prize messages. Words alone do not prove fraud.",
+        http: "The URL does not use HTTPS; the connection may not be encrypted.",
+        ip: "The URL uses an IP address instead of a typical domain name. This alone does not prove fraud.",
+        localIp: "The URL points to a local or private address. Confirm that this is your intended device or network.",
+        punycode: "The domain contains internationalized encoding (xn--). Check the domain carefully.",
+        shortener: "A URL-shortening service hides the final destination. Verify the destination before proceeding.",
+        credentials: "The address contains data before an @ sign that may obscure the actual hostname.",
+        subdomains: "The hostname has many subdomain levels. Verify the intended base domain.",
+        mixedScript: "The domain may contain characters from different writing systems. Verify the official domain.",
+        caution: "This is a preliminary result, not a safety certificate. A known domain may still contain an unwanted page or redirect. Verify the full address before entering sensitive information.",
+        cautionUnknown: "No warning signs does not mean a link is safe. This tool does not query security databases or check the link's online reputation."
       }
     };
 
@@ -457,6 +473,30 @@
     const clearButton = document.getElementById("clearButton");
 
     let currentLanguage = "ar";
+
+    // قائمة أولية للنطاقات المعروفة؛ ليست قاعدة بيانات أمنية.
+    // تُطابق أسماء النطاقات كاملة أو النطاقات الفرعية التابعة لها.
+    const knownDomains = [
+      "amazon.eg",
+      "amazon.com",
+      "amazon.co.uk",
+      "amazon.de",
+      "google.com",
+      "google.com.eg",
+      "youtube.com",
+      "youtu.be",
+      "facebook.com",
+      "instagram.com",
+      "whatsapp.com",
+      "microsoft.com",
+      "apple.com",
+      "wikipedia.org",
+      "github.com",
+      "linkedin.com",
+      "paypal.com",
+      "ebay.com",
+      "netflix.com"
+    ];
 
     const shorteners = new Set([
       "bit.ly", "tinyurl.com", "t.co", "is.gd", "cutt.ly",
@@ -475,22 +515,17 @@
     function changeLanguage(lang) {
       currentLanguage = lang === "en" ? "en" : "ar";
       document.documentElement.lang = currentLanguage;
-      document.documentElement.dir = currentLanguage === "ar" ? "rtl" : "ltr";
+      document.documentElement.dir =
+        currentLanguage === "ar" ? "rtl" : "ltr";
 
       document.querySelectorAll("[data-i18n]").forEach(element => {
         const key = element.getAttribute("data-i18n");
-        if (translations[currentLanguage][key]) {
-          element.textContent = translations[currentLanguage][key];
-        }
+        const value = translations[currentLanguage][key];
+        if (value) element.textContent = value;
       });
 
-      input.placeholder = currentLanguage === "ar"
-        ? "https://example.com"
-        : "https://example.com";
-
-      if (!result.hidden) {
-        const stored = result.dataset.scanUrl;
-        if (stored) analyzeAndRender(stored);
+      if (!result.hidden && result.dataset.scanUrl) {
+        analyzeAndRender(result.dataset.scanUrl);
       }
     }
 
@@ -504,66 +539,34 @@
     }
 
     function isLocalOrPrivateIPv4(host) {
-      const parts = host.split(".").map(Number);
-      if (parts.length !== 4 || !isIPv4(host)) return false;
+      if (!isIPv4(host)) return false;
+      const p = host.split(".").map(Number);
 
-      return parts[0] === 10 ||
-        parts[0] === 127 ||
-        (parts[0] === 192 && parts[1] === 168) ||
-        (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) ||
-        (parts[0] === 169 && parts[1] === 254) ||
-        parts[0] === 0;
+      return p[0] === 10 ||
+        p[0] === 127 ||
+        (p[0] === 192 && p[1] === 168) ||
+        (p[0] === 172 && p[1] >= 16 && p[1] <= 31) ||
+        (p[0] === 169 && p[1] === 254) ||
+        p[0] === 0;
     }
 
     function isIPv6(host) {
       return host.includes(":") && /^[0-9a-f:.]+$/i.test(host);
     }
 
-    function getBaseHost(host) {
-      // Heuristic only: this is not a public-suffix database.
-      const parts = host.split(".");
-      if (parts.length <= 2) return host;
-
-      const commonSecondLevel = new Set([
-        "co.uk", "org.uk", "ac.uk", "com.au", "net.au",
-        "co.nz", "com.br", "com.eg", "com.sg", "co.jp"
-      ]);
-
-      const lastTwo = parts.slice(-2).join(".");
-      if (commonSecondLevel.has(lastTwo) && parts.length >= 3) {
-        return parts.slice(-3).join(".");
-      }
-      return parts.slice(-2).join(".");
-    }
-
-    function containsMixedScripts(host) {
-      // Detect a basic Latin + non-Latin combination in the Unicode form.
-      let unicodeHost = host;
-      try {
-        unicodeHost = new URL("https://" + host).hostname;
-      } catch (_) {}
-
-      const hasLatin = /[a-z]/i.test(unicodeHost);
-      const hasOther = /[^\x00-\x7F]/.test(unicodeHost);
-      return hasLatin && hasOther;
+    function isKnownDomain(host) {
+      return knownDomains.some(domain =>
+        host === domain || host.endsWith("." + domain)
+      );
     }
 
     function normalizeUrl(raw) {
       let value = raw.trim();
 
-      if (!value) {
-        throw new Error("badUrl");
-      }
+      if (!value) throw new Error("badUrl");
+      if (/^mailto:/i.test(value)) throw new Error("mailto");
+      if (value.length > 4096) throw new Error("tooLong");
 
-      if (/^mailto:/i.test(value)) {
-        throw new Error("mailto");
-      }
-
-      if (value.length > 4096) {
-        throw new Error("tooLong");
-      }
-
-      // Permit users to enter a bare domain by adding HTTPS.
       if (!/^[a-z][a-z0-9+.-]*:/i.test(value) &&
           !value.startsWith("//")) {
         value = "https://" + value;
@@ -582,8 +585,9 @@
         throw new Error("unsupported");
       }
 
-      if (!parsed.hostname || !parsed.hostname.includes(".") &&
-          parsed.hostname !== "localhost") {
+      if (!parsed.hostname ||
+          (!parsed.hostname.includes(".") &&
+           parsed.hostname !== "localhost")) {
         throw new Error("badUrl");
       }
 
@@ -593,49 +597,51 @@
     function inspectUrl(raw) {
       const url = normalizeUrl(raw);
       const host = url.hostname.toLowerCase().replace(/\.$/, "");
-      const reasons = [];
-
-      if (url.protocol !== "https:") reasons.push("http");
+      const strong = [];
+      const minor = [];
 
       const ipv4 = isIPv4(host);
       const ipv6 = isIPv6(host);
+      const isIp = ipv4 || ipv6;
 
-      if (ipv4 || ipv6) reasons.push("ip");
+      if (url.protocol !== "https:") strong.push("http");
+      if (isIp) strong.push("ip");
 
       if ((ipv4 && isLocalOrPrivateIPv4(host)) ||
           host === "localhost" ||
           host.endsWith(".localhost") ||
           host.endsWith(".local") ||
           host === "::1" ||
-          host.startsWith("fc") ||
-          host.startsWith("fd") ||
-          host.startsWith("fe80:")) {
-        reasons.push("localIp");
+          /^f[cd][0-9a-f]*:/i.test(host) ||
+          /^fe80:/i.test(host)) {
+        strong.push("localIp");
       }
 
-      if (host.includes("xn--")) reasons.push("punycode");
-
-      if (url.username || url.password) reasons.push("credentials");
-
-      if (shorteners.has(host)) reasons.push("shortener");
-
-      if (url.href.length > 180) reasons.push("long");
+      if (host.includes("xn--")) strong.push("punycode");
+      if (url.username || url.password) strong.push("credentials");
+      if (shorteners.has(host)) strong.push("shortener");
 
       const labels = host.split(".");
-      if (!ipv4 && !ipv6 && labels.length >= 5) {
-        reasons.push("subdomains");
-      }
+      if (!isIp && labels.length >= 5) strong.push("subdomains");
+
+      // الطول والترميز والكلمات ليست أدلة قوية بمفردها.
+      if (url.href.length > 250) minor.push("long");
 
       const encodedCount = (url.href.match(/%[0-9a-f]{2}/gi) || []).length;
-      if (encodedCount >= 8) reasons.push("encoded");
+      if (encodedCount >= 12) minor.push("encoded");
 
-      if (suspiciousTerms.test(url.pathname + "?" + url.searchParams.toString())) {
-        reasons.push("suspiciousWords");
+      if (suspiciousTerms.test(url.pathname + "?" + url.search)) {
+        minor.push("suspiciousWords");
       }
 
-      if (containsMixedScripts(host)) reasons.push("mixedScript");
-
-      return { url, host, reasons };
+      // لا نحاول استنتاج النص الأصلي من hostname الذي قد يكون punycode.
+      return {
+        url,
+        host,
+        known: isKnownDomain(host),
+        strong: [...new Set(strong)],
+        minor: [...new Set(minor)]
+      };
     }
 
     function showInvalid(key) {
@@ -653,60 +659,77 @@
       result.dataset.scanUrl = "";
     }
 
+    function addText(tag, text, parent = result, className = "") {
+      const element = document.createElement(tag);
+      element.textContent = text;
+      if (className) element.className = className;
+      parent.appendChild(element);
+      return element;
+    }
+
+    function addReasons(title, reasons) {
+      if (!reasons.length) return;
+
+      addText("p", title);
+
+      const list = document.createElement("ul");
+      reasons.forEach(key => {
+        const item = document.createElement("li");
+        item.textContent = t(key);
+        list.appendChild(item);
+      });
+      result.appendChild(list);
+    }
+
     function analyzeAndRender(raw) {
       let inspection;
 
       try {
         inspection = inspectUrl(raw);
       } catch (error) {
-        showInvalid(
-          error.message === "mailto" ? "mailto" :
-          error.message === "unsupported" ? "unsupported" :
-          error.message === "tooLong" ? "tooLong" : "badUrl"
-        );
+        const key = ["mailto", "unsupported", "tooLong"].includes(error.message)
+          ? error.message
+          : "badUrl";
+        showInvalid(key);
         return;
       }
 
-      const { url, host, reasons } = inspection;
+      const { host, known, strong, minor } = inspection;
+
       result.replaceChildren();
-      result.className = reasons.length ? "warning" : "neutral";
       result.dataset.scanUrl = raw;
       result.hidden = false;
 
-      const heading = document.createElement("h3");
-      heading.textContent = reasons.length
-        ? t("warningTitle")
-        : t("neutralTitle");
-      result.appendChild(heading);
-
-      const domainLine = document.createElement("p");
-      domainLine.textContent = (currentLanguage === "ar"
-        ? "اسم المضيف: "
-        : "Hostname: ") + host;
-      result.appendChild(domainLine);
-
-      const listTitle = document.createElement("p");
-      listTitle.textContent = t("reasonsTitle");
-      result.appendChild(listTitle);
-
-      if (reasons.length) {
-        const list = document.createElement("ul");
-        [...new Set(reasons)].forEach(key => {
-          const item = document.createElement("li");
-          item.textContent = t(key);
-          list.appendChild(item);
-        });
-        result.appendChild(list);
+      // العلامات القوية تستدعي الحذر، حتى لو كان النطاق معروفًا.
+      if (strong.length) {
+        result.className = "warning";
+        addText("h3", t("warningTitle"));
+      } else if (known) {
+        // النطاق معروف، والملاحظات الشكلية وحدها لا تحول النتيجة لتحذير قوي.
+        result.className = "known";
+        addText("h3", t("knownTitle"));
+        addText("p", t("knownIntro"));
       } else {
-        const paragraph = document.createElement("p");
-        paragraph.textContent = t("noReasons");
-        result.appendChild(paragraph);
+        result.className = "neutral";
+        addText("h3", t("neutralTitle"));
       }
 
-      const caution = document.createElement("p");
-      caution.className = "result-note";
-      caution.textContent = t("alwaysCaution");
-      result.appendChild(caution);
+      addText("p", t("hostLabel") + host);
+      addText("p", known ? t("knownLabel") : t("unknownLabel"));
+
+      addReasons(t("strongTitle"), strong);
+      addReasons(t("weakTitle"), minor);
+
+      if (!strong.length && !minor.length) {
+        addText("p", t("noReasons"));
+      }
+
+      addText(
+        "p",
+        known ? t("caution") : t("cautionUnknown"),
+        result,
+        "result-note"
+      );
     }
 
     form.addEventListener("submit", event => {
