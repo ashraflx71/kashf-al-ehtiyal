@@ -1,0 +1,404 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#10243a">
+<meta name="description" content="كشف الاحتيال: أداة مجانية لفحص الروابط واكتشاف بعض علامات المواقع المشبوهة.">
+<title>كشف الاحتيال | Scam Detector</title>
+<style>
+:root {
+  --navy:#10243a;
+  --blue:#1769aa;
+  --orange:#f47721;
+  --bg:#f3f6fb;
+  --white:#fff;
+  --text:#1f2937;
+  --muted:#64748b;
+  --border:#dbe3ed;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  font-family:Arial,Tahoma,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.8;
+}
+header {
+  background:linear-gradient(135deg,#10243a,#1769aa);
+  color:white;
+  padding:30px 16px;
+  text-align:center;
+}
+.logo { font-size:42px; }
+header h1 { margin:0; font-size:30px; }
+header p { margin:6px 0 0; color:#e0ecf8; }
+.container {
+  max-width:760px;
+  margin:24px auto;
+  padding:0 14px;
+}
+.card {
+  background:var(--white);
+  padding:22px;
+  border-radius:18px;
+  border:1px solid var(--border);
+  box-shadow:0 6px 24px #10243a0b;
+  margin-bottom:18px;
+}
+h2 { color:var(--navy); margin-top:0; }
+label { display:block; font-weight:bold; margin-bottom:8px; }
+input, select, button {
+  width:100%;
+  padding:13px;
+  border-radius:10px;
+  font-size:16px;
+}
+input, select {
+  border:1px solid #b8c5d5;
+  background:white;
+  color:var(--text);
+}
+button {
+  border:0;
+  background:var(--orange);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:12px;
+}
+button:hover { filter:brightness(.95); }
+.secondary {
+  background:var(--navy);
+  margin-top:8px;
+}
+#result {
+  display:none;
+  padding:16px;
+  margin-top:18px;
+  border-radius:12px;
+  overflow-wrap:anywhere;
+}
+.warning { background:#fff0e9; border:1px solid #f4b49a; }
+.safe { background:#e9f8ef; border:1px solid #9dd8b1; }
+.info { background:#edf4ff; border:1px solid #b4cef4; }
+#result h3 { margin-top:0; }
+ul { padding-right:22px; }
+.small { color:var(--muted); font-size:14px; }
+footer {
+  text-align:center;
+  color:var(--muted);
+  padding:20px 14px 32px;
+}
+a { color:var(--blue); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🛡️</div>
+  <h1 id="title">كشف الاحتيال</h1>
+  <p id="subtitle">Scam Detector — افحص الرابط قبل أن تثق به</p>
+</header>
+
+<main class="container">
+  <section class="card">
+    <label for="language">🌐 اللغة / Language</label>
+    <select id="language" onchange="changeLanguage()">
+      <option value="ar">العربية</option>
+      <option value="en">English</option>
+    </select>
+  </section>
+
+  <section class="card">
+    <h2 id="heading">افحص رابطًا مشبوهًا</h2>
+    <p id="description">
+      أدخل الرابط لتحليل بعض العلامات التي قد تشير إلى الاحتيال.
+    </p>
+
+    <form id="scanForm">
+      <label id="urlLabel" for="url">رابط الموقع</label>
+      <input
+        id="url"
+        type="text"
+        inputmode="url"
+        autocomplete="url"
+        placeholder="https://example.com"
+        required
+        maxlength="2048"
+      >
+      <button type="submit" id="scanButton">🔎 افحص الرابط</button>
+    </form>
+
+    <div id="result" role="status" aria-live="polite"></div>
+    <button class="secondary" id="clearButton" type="button" onclick="clearForm()">
+      مسح النتائج
+    </button>
+  </section>
+
+  <section class="card">
+    <h2 id="tipsTitle">كيف تحمي نفسك؟</h2>
+    <ul id="tips">
+      <li>لا تشارك الرقم القومي أو بيانات البنك عبر روابط غير موثوقة.</li>
+      <li>تحقق من اسم النطاق الرسمي للجهة قبل تسجيل الدخول.</li>
+      <li>لا تضغط على روابط الجوائز والمساعدات المالية المجهولة.</li>
+      <li>وجود HTTPS وحده لا يعني أن الموقع آمن.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2 id="privacyTitle">الخصوصية وحدود الفحص</h2>
+    <p id="privacyText">
+      تتم عملية التحليل داخل متصفحك، ولا يرسل هذا الكود الرابط إلى خادم خارجي.
+      الفحص مبدئي ولا يتصل بقواعد بيانات الاحتيال، لذلك لا يضمن أن الموقع آمن
+      أو احتيالي. لا تفتح الروابط المشبوهة لمجرد اختبارها.
+    </p>
+  </section>
+</main>
+
+<footer>
+  <span id="footerText">كشف الاحتيال © 2026 — أداة توعوية مجانية</span>
+</footer>
+
+<script>
+"use strict";
+
+const translations = {
+  ar: {
+    title:"كشف الاحتيال",
+    subtitle:"Scam Detector — افحص الرابط قبل أن تثق به",
+    heading:"افحص رابطًا مشبوهًا",
+    description:"أدخل الرابط لتحليل بعض العلامات التي قد تشير إلى الاحتيال.",
+    urlLabel:"رابط الموقع",
+    placeholder:"https://example.com",
+    scan:"🔎 افحص الرابط",
+    clear:"مسح النتائج",
+    tipsTitle:"كيف تحمي نفسك؟",
+    tips:[
+      "لا تشارك الرقم القومي أو بيانات البنك عبر روابط غير موثوقة.",
+      "تحقق من اسم النطاق الرسمي للجهة قبل تسجيل الدخول.",
+      "لا تضغط على روابط الجوائز والمساعدات المالية المجهولة.",
+      "وجود HTTPS وحده لا يعني أن الموقع آمن."
+    ],
+    privacyTitle:"الخصوصية وحدود الفحص",
+    privacyText:"تتم عملية التحليل داخل متصفحك، ولا يرسل هذا الكود الرابط إلى خادم خارجي. الفحص مبدئي ولا يتصل بقواعد بيانات الاحتيال، لذلك لا يضمن أن الموقع آمن أو احتيالي. لا تفتح الروابط المشبوهة لمجرد اختبارها.",
+    invalid:"من فضلك أدخل رابطًا صحيحًا يبدأ بـ https:// أو http://",
+    suspicious:"تنبيه: ظهرت علامات تستحق الحذر",
+    noFlags:"لم تظهر علامات واضحة ضمن الفحوصات المحدودة",
+    findings:"الملاحظات:",
+    clean:"لم تظهر علامات واضحة في هذا الفحص المحدود، لكن ذلك لا يثبت أن الموقع آمن.",
+    footer:"كشف الاحتيال © 2026 — أداة توعوية مجانية",
+    checks:{
+      noHttps:"الرابط لا يستخدم HTTPS.",
+      ip:"الرابط يستخدم عنوان IP بدل اسم نطاق عادي.",
+      punycode:"اسم النطاق يحتوي على صيغة Punycode قد تُستخدم لتقليد أسماء المواقع.",
+      shortener:"الرابط يستخدم خدمة اختصار روابط؛ الوجهة النهائية غير واضحة.",
+      at:"الرابط يحتوي على علامة @ قد تسبب التباسًا في عنوان الوجهة.",
+      long:"الرابط طويل بشكل غير معتاد.",
+      subdomains:"اسم النطاق يحتوي على نطاقات فرعية كثيرة.",
+      keywords:"الرابط يحتوي على كلمات مرتبطة بالجوائز أو المطالبات أو البيانات الحساسة.",
+      oddTld:"امتداد النطاق غير شائع؛ هذه العلامة وحدها لا تعني الاحتيال."
+    }
+  },
+  en: {
+    title:"Scam Detector",
+    subtitle:"Check a link before you trust it",
+    heading:"Check a suspicious link",
+    description:"Enter a URL to analyze a few possible warning signs.",
+    urlLabel:"Website URL",
+    placeholder:"https://example.com",
+    scan:"🔎 Scan link",
+    clear:"Clear results",
+    tipsTitle:"How to protect yourself",
+    tips:[
+      "Never share ID or banking details through untrusted links.",
+      "Check the organization's official domain before signing in.",
+      "Avoid unknown prize and financial-aid links.",
+      "HTTPS alone does not mean a website is safe."
+    ],
+    privacyTitle:"Privacy and limitations",
+    privacyText:"Analysis runs in your browser. This code does not send the URL to an external server. It does not query threat databases, so it cannot guarantee that a site is safe or fraudulent. Do not open suspicious links just to test them.",
+    invalid:"Enter a valid URL starting with https:// or http://",
+    suspicious:"Warning: Some signs deserve caution",
+    noFlags:"No obvious signs were found in these limited checks",
+    findings:"Findings:",
+    clean:"No obvious signs were found, but this limited check does not prove the site is safe.",
+    footer:"Scam Detector © 2026 — Free awareness tool",
+    checks:{
+      noHttps:"The URL does not use HTTPS.",
+      ip:"The URL uses an IP address instead of a normal domain.",
+      punycode:"The domain contains Punycode, which can be used to imitate domain names.",
+      shortener:"The URL uses a link shortener, hiding the final destination.",
+      at:"The URL contains @, which can cause confusion about the destination.",
+      long:"The URL is unusually long.",
+      subdomains:"The hostname contains many subdomains.",
+      keywords:"The URL contains words associated with prizes, claims, or sensitive data.",
+      oddTld:"The domain extension is uncommon; this alone does not indicate fraud."
+    }
+  }
+};
+
+let currentLanguage = "ar";
+
+function changeLanguage() {
+  currentLanguage = document.getElementById("language").value;
+  const t = translations[currentLanguage];
+  const isArabic = currentLanguage === "ar";
+
+  document.documentElement.lang = currentLanguage;
+  document.documentElement.dir = isArabic ? "rtl" : "ltr";
+
+  document.getElementById("title").textContent = t.title;
+  document.getElementById("subtitle").textContent = t.subtitle;
+  document.getElementById("heading").textContent = t.heading;
+  document.getElementById("description").textContent = t.description;
+  document.getElementById("urlLabel").textContent = t.urlLabel;
+  document.getElementById("url").placeholder = t.placeholder;
+  document.getElementById("scanButton").textContent = t.scan;
+  document.getElementById("clearButton").textContent = t.clear;
+  document.getElementById("tipsTitle").textContent = t.tipsTitle;
+  document.getElementById("privacyTitle").textContent = t.privacyTitle;
+  document.getElementById("privacyText").textContent = t.privacyText;
+  document.getElementById("footerText").textContent = t.footer;
+
+  const tips = document.getElementById("tips");
+  tips.replaceChildren();
+  t.tips.forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = item;
+    tips.appendChild(li);
+  });
+
+  document.getElementById("result").style.display = "none";
+}
+
+function clearForm() {
+  document.getElementById("url").value = "";
+  const result = document.getElementById("result");
+  result.replaceChildren();
+  result.style.display = "none";
+}
+
+function analyzeUrl(raw) {
+  const t = translations[currentLanguage];
+  const findings = [];
+  let url;
+
+  try {
+    url = new URL(raw);
+  } catch {
+    return { invalid: true, findings: [] };
+  }
+
+  if (!["http:", "https:"].includes(url.protocol)) {
+    return { invalid: true, findings: [] };
+  }
+
+  const host = url.hostname.toLowerCase();
+  const parts = host.split(".").filter(Boolean);
+
+  if (url.protocol !== "https:") {
+    findings.push(t.checks.noHttps);
+  }
+
+  if (/^\d{1,3}(\.\d{1,3}){3}$/.test(host)) {
+    findings.push(t.checks.ip);
+  }
+
+  if (host.includes("xn--")) {
+    findings.push(t.checks.punycode);
+  }
+
+  if (
+    /(^|\.)((bit\.ly)|(tinyurl\.com)|(t\.co)|(is\.gd)|(cutt\.ly)|(rb\.gy))$/i
+      .test(host)
+  ) {
+    findings.push(t.checks.shortener);
+  }
+
+  if (raw.includes("@")) {
+    findings.push(t.checks.at);
+  }
+
+  if (raw.length > 150) {
+    findings.push(t.checks.long);
+  }
+
+  if (parts.length >= 5) {
+    findings.push(t.checks.subdomains);
+  }
+
+  if (
+    /(prize|winner|claim|verify|urgent|free-money|login|password|gift|تحقق|جائزة|اربح|مساعدة|منحة|دعم مالي|رقم قومي|فزت)/i
+      .test(raw)
+  ) {
+    findings.push(t.checks.keywords);
+  }
+
+  const commonTlds = [
+    "com","org","net","edu","gov","mil","int",
+    "eg","uk","us","de","fr","io","app","info","biz"
+  ];
+  const tld = host.split(".").pop();
+
+  if (tld && !commonTlds.includes(tld)) {
+    findings.push(t.checks.oddTld);
+  }
+
+  return { invalid: false, findings };
+}
+
+document.getElementById("scanForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const raw = document.getElementById("url").value.trim();
+  const result = document.getElementById("result");
+  const t = translations[currentLanguage];
+
+  result.replaceChildren();
+  result.style.display = "block";
+
+  const analysis = analyzeUrl(raw);
+
+  if (analysis.invalid) {
+    result.className = "warning";
+    const msg = document.createElement("p");
+    msg.textContent = t.invalid;
+    result.appendChild(msg);
+    return;
+  }
+
+  if (analysis.findings.length > 0) {
+    result.className = "warning";
+
+    const heading = document.createElement("h3");
+    heading.textContent = t.suspicious;
+    result.appendChild(heading);
+
+    const label = document.createElement("p");
+    label.textContent = t.findings;
+    result.appendChild(label);
+
+    const list = document.createElement("ul");
+    analysis.findings.forEach(finding => {
+      const li = document.createElement("li");
+      li.textContent = finding;
+      list.appendChild(li);
+    });
+    result.appendChild(list);
+  } else {
+    result.className = "safe";
+    const heading = document.createElement("h3");
+    heading.textContent = t.noFlags;
+    result.appendChild(heading);
+  }
+
+  const disclaimer = document.createElement("p");
+  disclaimer.textContent = t.clean;
+  result.appendChild(disclaimer);
+});
+</script>
+</body>
+</html>
