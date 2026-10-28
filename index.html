@@ -5,8 +5,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#10243a">
-<meta name="description" content="كشف الاحتيال: أداة مجانية لفحص الروابط واكتشاف بعض علامات المواقع المشبوهة.">
+<meta name="description" content="كشف الاحتيال: أداة مجانية لتحليل الروابط واكتشاف بعض علامات المواقع المشبوهة.">
 <title>كشف الاحتيال | Scam Detector</title>
+
 <style>
 :root {
   --navy:#10243a;
@@ -50,13 +51,13 @@ header p { margin:6px 0 0; color:#e0ecf8; }
 }
 h2 { color:var(--navy); margin-top:0; }
 label { display:block; font-weight:bold; margin-bottom:8px; }
-input, select, button {
+input,select,button {
   width:100%;
   padding:13px;
   border-radius:10px;
   font-size:16px;
 }
-input, select {
+input,select {
   border:1px solid #b8c5d5;
   background:white;
   color:var(--text);
@@ -69,11 +70,12 @@ button {
   cursor:pointer;
   margin-top:12px;
 }
-button:hover { filter:brightness(.95); }
-.secondary {
-  background:var(--navy);
-  margin-top:8px;
+button:hover,.ad-link:hover { filter:brightness(.95); }
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible {
+  outline:3px solid #8dbdf2;
+  outline-offset:2px;
 }
+.secondary { background:var(--navy); margin-top:8px; }
 #result {
   display:none;
   padding:16px;
@@ -83,46 +85,47 @@ button:hover { filter:brightness(.95); }
 }
 .warning { background:#fff0e9; border:1px solid #f4b49a; }
 .safe { background:#e9f8ef; border:1px solid #9dd8b1; }
-.info { background:#edf4ff; border:1px solid #b4cef4; }
 #result h3 { margin-top:0; }
 ul { padding-right:22px; }
 .small { color:var(--muted); font-size:14px; }
-
-<section class="card" aria-label="إعلان">
-  <div style="text-align:center">
-    <p style="font-size:36px;margin:0">🛍️</p>
-    <h2>إعلان | عروض وخصومات مصر</h2>
-    <p>اكتشف المنتجات والعروض التي قد تناسبك عبر موقعنا.</p>
-    <a
-      href="https://ashraflx71.github.io/deals-ega/"
-      target="_blank"
-      rel="noopener noreferrer"
-      style="display:inline-block;background:#f47721;color:white;
-      padding:12px 22px;border-radius:10px;text-decoration:none;
-      font-weight:bold"
-    >تصفح العروض الآن</a>
-  </div>
-</section>
-  footer {
-    text-align:center;
+.ad-card {
+  border:2px solid #f7c39f;
+  background:linear-gradient(135deg,#fff,#fff7f0);
+  text-align:center;
+}
+.ad-icon { font-size:38px; margin:0; }
+.ad-link {
+  display:inline-block;
+  background:var(--orange);
+  color:white;
+  padding:12px 22px;
+  border-radius:10px;
+  text-decoration:none;
+  font-weight:bold;
+}
+footer {
+  text-align:center;
   color:var(--muted);
   padding:20px 14px 32px;
 }
 a { color:var(--blue); }
+footer a { overflow-wrap:anywhere; }
 </style>
 </head>
+
 <body>
 
 <header>
-  <div class="logo">🛡️</div>
+  <div class="logo" aria-hidden="true">🛡️</div>
   <h1 id="title">كشف الاحتيال</h1>
   <p id="subtitle">Scam Detector — افحص الرابط قبل أن تثق به</p>
 </header>
 
 <main class="container">
+
   <section class="card">
-    <label for="language">🌐 اللغة / Language</label>
-    <select id="language" onchange="changeLanguage()">
+    <label for="language" id="languageLabel">🌐 اللغة / Language</label>
+    <select id="language">
       <option value="ar">العربية</option>
       <option value="en">English</option>
     </select>
@@ -144,12 +147,16 @@ a { color:var(--blue); }
         placeholder="https://example.com"
         required
         maxlength="2048"
+        aria-describedby="urlHelp"
       >
+      <p id="urlHelp" class="small">
+        لا تفتح الرابط المشبوه؛ يكفي لصقه هنا لتحليل عنوانه.
+      </p>
       <button type="submit" id="scanButton">🔎 افحص الرابط</button>
     </form>
 
     <div id="result" role="status" aria-live="polite"></div>
-    <button class="secondary" id="clearButton" type="button" onclick="clearForm()">
+    <button class="secondary" id="clearButton" type="button">
       مسح النتائج
     </button>
   </section>
@@ -169,13 +176,44 @@ a { color:var(--blue); }
     <p id="privacyText">
       تتم عملية التحليل داخل متصفحك، ولا يرسل هذا الكود الرابط إلى خادم خارجي.
       الفحص مبدئي ولا يتصل بقواعد بيانات الاحتيال، لذلك لا يضمن أن الموقع آمن
-      أو احتيالي. لا تفتح الروابط المشبوهة لمجرد اختبارها.
+      أو احتيالي.
     </p>
   </section>
+
+  <!-- إعلان ترويجي ذاتي لموقع عروض وخصومات مصر -->
+  <section class="card ad-card" aria-labelledby="adTitle">
+    <p class="ad-icon" aria-hidden="true">🛍️</p>
+    <p id="adLabel" class="small">إعلان ترويجي</p>
+    <h2 id="adTitle">عروض وخصومات مصر</h2>
+    <p id="adDescription">
+      اكتشف المنتجات والعروض التي قد تناسبك عبر موقعنا.
+    </p>
+
+    <a
+      id="adLink"
+      class="ad-link"
+      href="https://ashraflx71.github.io/deals-ega/"
+      target="_blank"
+      rel="noopener noreferrer"
+    >تصفح العروض الآن</a>
+
+    <p id="adDisclaimer" class="small">
+      موقع ترويجي مستقل. تحقق من تفاصيل المنتج والسعر والتوافر لدى البائع قبل الشراء.
+    </p>
+  </section>
+
 </main>
 
 <footer>
   <span id="footerText">كشف الاحتيال © 2026 — أداة توعوية مجانية</span>
+  <p>
+    <a
+      href="https://ashraflx71.github.io/deals-ega/"
+      target="_blank"
+      rel="noopener noreferrer"
+      id="footerAdLink"
+    >عروض وخصومات مصر</a>
+  </p>
 </footer>
 
 <script>
@@ -185,10 +223,12 @@ const translations = {
   ar: {
     title:"كشف الاحتيال",
     subtitle:"Scam Detector — افحص الرابط قبل أن تثق به",
+    languageLabel:"🌐 اللغة / Language",
     heading:"افحص رابطًا مشبوهًا",
     description:"أدخل الرابط لتحليل بعض العلامات التي قد تشير إلى الاحتيال.",
     urlLabel:"رابط الموقع",
     placeholder:"https://example.com",
+    urlHelp:"لا تفتح الرابط المشبوه؛ يكفي لصقه هنا لتحليل عنوانه.",
     scan:"🔎 افحص الرابط",
     clear:"مسح النتائج",
     tipsTitle:"كيف تحمي نفسك؟",
@@ -199,13 +239,19 @@ const translations = {
       "وجود HTTPS وحده لا يعني أن الموقع آمن."
     ],
     privacyTitle:"الخصوصية وحدود الفحص",
-    privacyText:"تتم عملية التحليل داخل متصفحك، ولا يرسل هذا الكود الرابط إلى خادم خارجي. الفحص مبدئي ولا يتصل بقواعد بيانات الاحتيال، لذلك لا يضمن أن الموقع آمن أو احتيالي. لا تفتح الروابط المشبوهة لمجرد اختبارها.",
+    privacyText:"تتم عملية التحليل داخل متصفحك، ولا يرسل هذا الكود الرابط إلى خادم خارجي. الفحص مبدئي ولا يتصل بقواعد بيانات الاحتيال، لذلك لا يضمن أن الموقع آمن أو احتيالي.",
     invalid:"من فضلك أدخل رابطًا صحيحًا يبدأ بـ https:// أو http://",
     suspicious:"تنبيه: ظهرت علامات تستحق الحذر",
     noFlags:"لم تظهر علامات واضحة ضمن الفحوصات المحدودة",
     findings:"الملاحظات:",
-    clean:"لم تظهر علامات واضحة في هذا الفحص المحدود، لكن ذلك لا يثبت أن الموقع آمن.",
+    disclaimer:"هذا فحص مبدئي فقط، ولا يؤكد أن الموقع آمن أو احتيالي.",
     footer:"كشف الاحتيال © 2026 — أداة توعوية مجانية",
+    adLabel:"إعلان ترويجي",
+    adTitle:"عروض وخصومات مصر",
+    adDescription:"اكتشف المنتجات والعروض التي قد تناسبك عبر موقعنا.",
+    adButton:"تصفح العروض الآن",
+    adDisclaimer:"موقع ترويجي مستقل. تحقق من تفاصيل المنتج والسعر والتوافر لدى البائع قبل الشراء.",
+    footerAdLink:"عروض وخصومات مصر",
     checks:{
       noHttps:"الرابط لا يستخدم HTTPS.",
       ip:"الرابط يستخدم عنوان IP بدل اسم نطاق عادي.",
@@ -218,13 +264,16 @@ const translations = {
       oddTld:"امتداد النطاق غير شائع؛ هذه العلامة وحدها لا تعني الاحتيال."
     }
   },
+
   en: {
     title:"Scam Detector",
     subtitle:"Check a link before you trust it",
+    languageLabel:"🌐 Language",
     heading:"Check a suspicious link",
     description:"Enter a URL to analyze a few possible warning signs.",
     urlLabel:"Website URL",
     placeholder:"https://example.com",
+    urlHelp:"Do not open a suspicious link; paste its address here for analysis.",
     scan:"🔎 Scan link",
     clear:"Clear results",
     tipsTitle:"How to protect yourself",
@@ -235,13 +284,19 @@ const translations = {
       "HTTPS alone does not mean a website is safe."
     ],
     privacyTitle:"Privacy and limitations",
-    privacyText:"Analysis runs in your browser. This code does not send the URL to an external server. It does not query threat databases, so it cannot guarantee that a site is safe or fraudulent. Do not open suspicious links just to test them.",
+    privacyText:"Analysis runs in your browser. This code does not send the URL to an external server. It does not query threat databases, so it cannot guarantee that a site is safe or fraudulent.",
     invalid:"Enter a valid URL starting with https:// or http://",
     suspicious:"Warning: Some signs deserve caution",
     noFlags:"No obvious signs were found in these limited checks",
     findings:"Findings:",
-    clean:"No obvious signs were found, but this limited check does not prove the site is safe.",
+    disclaimer:"This is only a preliminary check and does not confirm that a site is safe or fraudulent.",
     footer:"Scam Detector © 2026 — Free awareness tool",
+    adLabel:"Self-promotion",
+    adTitle:"Egypt Deals & Discounts",
+    adDescription:"Discover products and offers that may suit you on our website.",
+    adButton:"Browse deals",
+    adDisclaimer:"Independent promotional website. Check product details, price, and availability with the seller before buying.",
+    footerAdLink:"Egypt Deals & Discounts",
     checks:{
       noHttps:"The URL does not use HTTPS.",
       ip:"The URL uses an IP address instead of a normal domain.",
@@ -268,33 +323,46 @@ function changeLanguage() {
 
   document.getElementById("title").textContent = t.title;
   document.getElementById("subtitle").textContent = t.subtitle;
+  document.getElementById("languageLabel").textContent = t.languageLabel;
   document.getElementById("heading").textContent = t.heading;
   document.getElementById("description").textContent = t.description;
   document.getElementById("urlLabel").textContent = t.urlLabel;
   document.getElementById("url").placeholder = t.placeholder;
+  document.getElementById("urlHelp").textContent = t.urlHelp;
   document.getElementById("scanButton").textContent = t.scan;
   document.getElementById("clearButton").textContent = t.clear;
   document.getElementById("tipsTitle").textContent = t.tipsTitle;
   document.getElementById("privacyTitle").textContent = t.privacyTitle;
   document.getElementById("privacyText").textContent = t.privacyText;
   document.getElementById("footerText").textContent = t.footer;
+  document.getElementById("adLabel").textContent = t.adLabel;
+  document.getElementById("adTitle").textContent = t.adTitle;
+  document.getElementById("adDescription").textContent = t.adDescription;
+  document.getElementById("adLink").textContent = t.adButton;
+  document.getElementById("adDisclaimer").textContent = t.adDisclaimer;
+  document.getElementById("footerAdLink").textContent = t.footerAdLink;
 
   const tips = document.getElementById("tips");
   tips.replaceChildren();
+
   t.tips.forEach(item => {
     const li = document.createElement("li");
     li.textContent = item;
     tips.appendChild(li);
   });
 
-  document.getElementById("result").style.display = "none";
+  const result = document.getElementById("result");
+  result.style.display = "none";
+  result.replaceChildren();
 }
 
 function clearForm() {
   document.getElementById("url").value = "";
+
   const result = document.getElementById("result");
   result.replaceChildren();
   result.style.display = "none";
+  result.className = "";
 }
 
 function analyzeUrl(raw) {
@@ -305,11 +373,11 @@ function analyzeUrl(raw) {
   try {
     url = new URL(raw);
   } catch {
-    return { invalid: true, findings: [] };
+    return { invalid:true, findings:[] };
   }
 
   if (!["http:", "https:"].includes(url.protocol)) {
-    return { invalid: true, findings: [] };
+    return { invalid:true, findings:[] };
   }
 
   const host = url.hostname.toLowerCase();
@@ -327,10 +395,14 @@ function analyzeUrl(raw) {
     findings.push(t.checks.punycode);
   }
 
-  if (
-    /(^|\.)((bit\.ly)|(tinyurl\.com)|(t\.co)|(is\.gd)|(cutt\.ly)|(rb\.gy))$/i
-      .test(host)
-  ) {
+  const shorteners = [
+    "bit.ly","tinyurl.com","t.co","is.gd",
+    "cutt.ly","rb.gy","ow.ly","buff.ly"
+  ];
+
+  if (shorteners.some(domain =>
+    host === domain || host.endsWith("." + domain)
+  )) {
     findings.push(t.checks.shortener);
   }
 
@@ -346,10 +418,7 @@ function analyzeUrl(raw) {
     findings.push(t.checks.subdomains);
   }
 
-  if (
-    /(prize|winner|claim|verify|urgent|free-money|login|password|gift|تحقق|جائزة|اربح|مساعدة|منحة|دعم مالي|رقم قومي|فزت)/i
-      .test(raw)
-  ) {
+  if (/(prize|winner|claim|verify|urgent|free-money|login|password|gift|تحقق|جائزة|اربح|مساعدة|منحة|دعم مالي|رقم قومي|فزت)/i.test(raw)) {
     findings.push(t.checks.keywords);
   }
 
@@ -357,64 +426,77 @@ function analyzeUrl(raw) {
     "com","org","net","edu","gov","mil","int",
     "eg","uk","us","de","fr","io","app","info","biz"
   ];
+
   const tld = host.split(".").pop();
 
   if (tld && !commonTlds.includes(tld)) {
     findings.push(t.checks.oddTld);
   }
 
-  return { invalid: false, findings };
+  return { invalid:false, findings };
 }
 
-document.getElementById("scanForm").addEventListener("submit", function(event) {
-  event.preventDefault();
+document.getElementById("language")
+  .addEventListener("change", changeLanguage);
 
-  const raw = document.getElementById("url").value.trim();
-  const result = document.getElementById("result");
-  const t = translations[currentLanguage];
+document.getElementById("clearButton")
+  .addEventListener("click", clearForm);
 
-  result.replaceChildren();
-  result.style.display = "block";
+document.getElementById("scanForm")
+  .addEventListener("submit", function(event) {
+    event.preventDefault();
 
-  const analysis = analyzeUrl(raw);
+    const raw = document.getElementById("url").value.trim();
+    const result = document.getElementById("result");
+    const t = translations[currentLanguage];
 
-  if (analysis.invalid) {
-    result.className = "warning";
-    const msg = document.createElement("p");
-    msg.textContent = t.invalid;
-    result.appendChild(msg);
-    return;
-  }
+    result.replaceChildren();
+    result.style.display = "block";
 
-  if (analysis.findings.length > 0) {
-    result.className = "warning";
+    const analysis = analyzeUrl(raw);
 
-    const heading = document.createElement("h3");
-    heading.textContent = t.suspicious;
-    result.appendChild(heading);
+    if (analysis.invalid) {
+      result.className = "warning";
 
-    const label = document.createElement("p");
-    label.textContent = t.findings;
-    result.appendChild(label);
+      const msg = document.createElement("p");
+      msg.textContent = t.invalid;
+      result.appendChild(msg);
+      return;
+    }
 
-    const list = document.createElement("ul");
-    analysis.findings.forEach(finding => {
-      const li = document.createElement("li");
-      li.textContent = finding;
-      list.appendChild(li);
-    });
-    result.appendChild(list);
-  } else {
-    result.className = "safe";
-    const heading = document.createElement("h3");
-    heading.textContent = t.noFlags;
-    result.appendChild(heading);
-  }
+    if (analysis.findings.length > 0) {
+      result.className = "warning";
 
-  const disclaimer = document.createElement("p");
-  disclaimer.textContent = t.clean;
-  result.appendChild(disclaimer);
-});
+      const heading = document.createElement("h3");
+      heading.textContent = t.suspicious;
+      result.appendChild(heading);
+
+      const label = document.createElement("p");
+      label.textContent = t.findings;
+      result.appendChild(label);
+
+      const list = document.createElement("ul");
+
+      analysis.findings.forEach(finding => {
+        const li = document.createElement("li");
+        li.textContent = finding;
+        list.appendChild(li);
+      });
+
+      result.appendChild(list);
+    } else {
+      result.className = "safe";
+
+      const heading = document.createElement("h3");
+      heading.textContent = t.noFlags;
+      result.appendChild(heading);
+    }
+
+    const disclaimer = document.createElement("p");
+    disclaimer.textContent = t.disclaimer;
+    result.appendChild(disclaimer);
+  });
 </script>
+
 </body>
 </html>
